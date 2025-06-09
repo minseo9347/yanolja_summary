@@ -1,0 +1,44 @@
+0. 실습환경 셋팅
+ - git 레포지토리 생성, clone
+ - 가상환경 셋팅, 라이브러리 설치
+1. 데이터 수집
+ - 필요한 데이터 속성을 정해서 수집하기
+2. 요약을 위한 데이터 전처리
+ - 리뷰 데이터 파일 로딩
+ - 리뷰 요약 기준(평점: 1~5)
+    - good : 평점 5인것
+    - bad : 평점이 4이하인것
+ - 각 리뷰마다 specital token
+    - '[REVIEW_START]' + ['review'] + '[REVIEW_END]'
+ - 리뷰를 하나의 문자열로 통합
+    - reviews_good, reviews_bad
+ - 데이터의 범위를 현재를 기준으로 이전 6개월치
+ - 함수로 모듈화 하기
+3. 요약을 위한 프롬프트 고도화
+ - 요약을 위한 LLM 모델 정하기
+ - 평가방법 정하기
+ - 필요하다면, 대조군 만들기
+
+4. mysql db 생성, 개발계정 발급, DB권한 부여
+CREATE DATABASE yanolja_db;
+use yanolja_db;
+-- 개발자 계정 만들기
+CREATE USER 'smile'@'localhost' IDENTIFIED BY '1234';
+CREATE USER 'smile'@'%' IDENTIFIED BY '1234';
+
+-- yanolja_db 접속 권한 부여
+GRANT ALL PRIVILEGES ON yanolja_db.* TO 'smile'@'localhost';
+GRANT ALL PRIVILEGES ON yanolja_db.* TO 'smile'@'%';
+
+5.테이블 생성
+- fastapi에서 models.py에 클래스 정의
+- mysql 엔진 연결
+- fastapi 실행 -> ORM으로 테이블 생성
+  - mysql 연결시 필요한 라이브러리
+    pip install pymysql
+    pip install cryptography
+
+6. 데이터 DB 입력하기
+- 숙박정보(file)
+- 리뷰정보(file)
+- 리뷰요약 정보(코드 모듈화해서 DB저장)
